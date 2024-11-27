@@ -32,14 +32,18 @@ public class Book {
     private String isbn;
 
     @ManyToMany
-    private List<Genre> genre;
+    @JoinTable(
+            name = "book_genre",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private List<Genre> genres;
 
-    public List<Genre> getGenre() {
-        return genre;
+    public List<Genre> getGenres() {
+        return genres;
     }
 
-    public void setGenre(List<Genre> genre) {
-        this.genre = genre;
+    public void setGenres(List<Genre> genres) {
+        this.genres = genres;
     }
 
     @Temporal(TemporalType.DATE)

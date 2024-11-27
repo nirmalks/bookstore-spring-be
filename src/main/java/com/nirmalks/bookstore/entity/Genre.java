@@ -13,7 +13,7 @@ public class Genre {
 
     private String name;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "genres")
     private List<Book> books;
 
     public List<Book> getBooks() {
