@@ -3,6 +3,7 @@ package com.nirmalks.bookstore.entity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -17,7 +18,11 @@ public class Book {
     private String title;
 
     @ManyToMany
-    private List<Author> author;
+    @JoinTable(
+            name = "book_author",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id"))
+    private List<Author> authors;
 
     @Column(nullable = false)
     private Double price;
@@ -38,7 +43,7 @@ public class Book {
     }
 
     @Temporal(TemporalType.DATE)
-    private Date publishedDate;
+    private LocalDate publishedDate;
     public Long getId() {
         return id;
     }
@@ -68,12 +73,12 @@ public class Book {
         this.title = title;
     }
 
-    public List<Author> getAuthor() {
-        return author;
+    public List<Author> getAuthors() {
+        return authors;
     }
 
-    public void setAuthor(List<Author> author) {
-        this.author = author;
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 
     public Double getPrice() {
@@ -100,11 +105,11 @@ public class Book {
         this.isbn = isbn;
     }
 
-    public Date getPublishedDate() {
+    public LocalDate getPublishedDate() {
         return publishedDate;
     }
 
-    public void setPublishedDate(Date publishedDate) {
+    public void setPublishedDate(LocalDate publishedDate) {
         this.publishedDate = publishedDate;
     }
 }
