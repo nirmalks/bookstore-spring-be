@@ -13,7 +13,28 @@ public class CartItem {
     private double price;
 
     @ManyToOne
+    @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
+
+    @ManyToOne
+    @JoinColumn(name = "book_id", nullable = false)
+    private Book book;
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
 
     public Long getId() {
         return id;
@@ -39,11 +60,4 @@ public class CartItem {
         this.price = price;
     }
 
-    public Cart getCart() {
-        return cart;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-    }
 }

@@ -8,13 +8,29 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "order_id")  // Change to Many-to-One with order
     private Order order;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "book_id")
     private Book book;
 
     private double price;
+
+    private int quantity;
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double calculateItemCost() {
+        return this.getPrice() * this.getQuantity();
+    }
 
     public Long getId() {
         return id;
