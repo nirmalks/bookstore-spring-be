@@ -1,8 +1,11 @@
 package com.nirmalks.bookstore.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Type;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Entity(name = "users")
@@ -72,5 +75,9 @@ public class User {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public Collection<?extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.getRole().name()));
     }
 }

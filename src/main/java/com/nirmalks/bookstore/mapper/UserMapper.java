@@ -25,14 +25,14 @@ public class UserMapper {
         return user;
     }
 
-    public static User toEntity(CreateUserRequest request) {
-        User user = new User();
-        user.setPassword(request.getPassword());
-        user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
-        user.setRole(request.getRole());
-        return user;
-    }
+        public static User toEntity(CreateUserRequest request) {
+            User user = new User();
+            user.setPassword(request.getPassword());
+            user.setUsername(request.getUsername());
+            user.setEmail(request.getEmail());
+            user.setRole(request.getRole());
+            return user;
+        }
 
     public static User toEntity(User existingUser, UpdateUserRequest request) {
         existingUser.setPassword(request.getPassword());

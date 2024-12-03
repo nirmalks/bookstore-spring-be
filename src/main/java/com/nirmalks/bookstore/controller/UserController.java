@@ -15,22 +15,22 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users")
+    @GetMapping()
     public List<UserResponse> getUsers() {
         return userService.getUsers();
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     public UserResponse getUser(@PathVariable Long id) {
         return userService.getUserById(id);
     }
 
-    @PostMapping("/users")
+    @PostMapping()
     public ResponseEntity<UserResponse> addUser(@RequestBody @Valid CreateUserRequest userRequest) {
         var userResponse = userService.createUser(userRequest);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -38,13 +38,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.LOCATION, String.valueOf(location)).body(userResponse);
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<UserResponse> updateUser(@RequestBody @Valid UpdateUserRequest userRequest, @PathVariable Long id) {
         var userResponse = userService.updateUser(id, userRequest);
         return ResponseEntity.status(HttpStatus.OK).body(userResponse);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).build();
