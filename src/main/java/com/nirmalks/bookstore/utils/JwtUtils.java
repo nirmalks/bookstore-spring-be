@@ -39,9 +39,6 @@ public class JwtUtils {
     }
 
     public static String generateToken(String username, Collection<? extends GrantedAuthority> authorities) {
-//        return Jwts.builder().subject(username).issuedAt(new Date()).expiration(new Date(System.currentTimeMillis() + AppConstants.TOKEN_EXPIRATION_TIME)).signWith(SECRET_KEY)
-//                .compact();
-
         return Jwts.builder().issuer("nirmalks").subject("token")
                 .claim("username", username)
                 .claim("role", authorities.stream()

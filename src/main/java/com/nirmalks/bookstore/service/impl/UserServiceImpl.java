@@ -6,7 +6,6 @@ import com.nirmalks.bookstore.dto.UpdateUserRequest;
 import com.nirmalks.bookstore.dto.UserResponse;
 import com.nirmalks.bookstore.entity.User;
 import com.nirmalks.bookstore.exception.ResourceNotFoundException;
-import com.nirmalks.bookstore.exception.UnauthorizedException;
 import com.nirmalks.bookstore.mapper.UserMapper;
 import com.nirmalks.bookstore.repository.UserRepository;
 import com.nirmalks.bookstore.service.UserService;
@@ -69,21 +68,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public LoginResponse authenticate(String username, String password) {
-        var user = userRepository.findByUsername(username);
-        if (user.isEmpty()) {
-            throw new UnauthorizedException("Invalid username or password");
-        }
-
-        if (!passwordEncoder.matches(password, user.get().getPassword())) {
-            throw new UnauthorizedException("pw didnt maych");
-        }
-        String token =  JwtUtils.generateToken(user.get().getUsername(), user.get().getAuthorities());
+        var user = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("user not found"));
+        String token =  JwtUtils.generateToken(user.getUsername(), user.getAuthorities());
 
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(token);
-        loginResponse.setUsername(user.get().getUsername());
-        loginResponse.setUserId(user.get().getId());
-
+        loginResponse.setUsername(user.getUsername());
+        loginResponse.setUserId(user.getId());
+        loginResponse.setRole(user.getRole().name());
         return loginResponse;
 
     }
