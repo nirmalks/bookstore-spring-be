@@ -1,15 +1,24 @@
 package com.nirmalks.bookstore.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
 import java.util.List;
 
 public class BookRequest {
+    @NotNull
     private String title;
+    @NotNull
     private List<Long> authorIds;
+    @NotNull
     private Double price;
+    @NotNull
     private int stock;
+    @NotNull
     private String isbn;
+    @NotNull
     private LocalDate publishedDate;
+    @NotNull
     private List<Long> genreIds;
 
     public String getTitle() {

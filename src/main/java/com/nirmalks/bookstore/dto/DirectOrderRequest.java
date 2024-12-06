@@ -1,9 +1,11 @@
 package com.nirmalks.bookstore.dto;
 
-import java.util.List;
+import jakarta.validation.constraints.NotNull;
 
 public class DirectOrderRequest {
+    @NotNull
     Long userId;
+    @NotNull
     OrderItemDto item;
 
     public Long getUserId() {

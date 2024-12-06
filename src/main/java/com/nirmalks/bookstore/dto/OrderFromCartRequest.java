@@ -1,7 +1,11 @@
 package com.nirmalks.bookstore.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public class OrderFromCartRequest {
+    @NotNull
     Long cartId;
+    @NotNull
     Long userId;
 
     public Long getCartId() {

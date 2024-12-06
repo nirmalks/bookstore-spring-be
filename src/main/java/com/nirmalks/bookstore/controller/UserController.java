@@ -29,7 +29,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or #id == principal")
+    @PreAuthorize("hasRole('ADMIN') or @securityUtils.isSameUser(#id)")
     public UserResponse getUser(@PathVariable Long id) {
         return userService.getUserById(id);
     }
@@ -43,7 +43,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN') or #id == principal")
+    @PreAuthorize("hasRole('ADMIN') or @securityUtils.isSameUser(#id)")
     public ResponseEntity<UserResponse> updateUser(@RequestBody @Valid UpdateUserRequest userRequest, @PathVariable Long id) {
         var userResponse = userService.updateUser(id, userRequest);
         return ResponseEntity.status(HttpStatus.OK).body(userResponse);

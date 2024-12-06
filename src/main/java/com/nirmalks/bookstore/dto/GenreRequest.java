@@ -1,6 +1,9 @@
 package com.nirmalks.bookstore.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public class GenreRequest {
+    @NotNull
     String name;
 
     public String getName() {
