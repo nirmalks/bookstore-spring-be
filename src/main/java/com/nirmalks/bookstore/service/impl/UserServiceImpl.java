@@ -5,6 +5,7 @@ import com.nirmalks.bookstore.dto.LoginResponse;
 import com.nirmalks.bookstore.dto.UpdateUserRequest;
 import com.nirmalks.bookstore.dto.UserResponse;
 import com.nirmalks.bookstore.entity.User;
+import com.nirmalks.bookstore.entity.UserRole;
 import com.nirmalks.bookstore.exception.ResourceNotFoundException;
 import com.nirmalks.bookstore.mapper.UserMapper;
 import com.nirmalks.bookstore.repository.UserRepository;
@@ -30,10 +31,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse createUser(CreateUserRequest userRequest) {
+    public UserResponse createUser(CreateUserRequest userRequest, UserRole role) {
         String encryptedPassword = passwordEncoder.encode(userRequest.getPassword());
         userRequest.setPassword(encryptedPassword);
-        User user = UserMapper.toEntity(userRequest);
+        User user = UserMapper.toEntity(userRequest, role);
         userRepository.save(user);
         return UserMapper.toResponse(user);
     }

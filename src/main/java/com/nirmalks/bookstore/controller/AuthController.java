@@ -4,12 +4,14 @@ import com.nirmalks.bookstore.dto.CreateUserRequest;
 import com.nirmalks.bookstore.dto.LoginRequest;
 import com.nirmalks.bookstore.dto.LoginResponse;
 import com.nirmalks.bookstore.dto.UserResponse;
+import com.nirmalks.bookstore.entity.UserRole;
 import com.nirmalks.bookstore.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,9 +29,19 @@ public class AuthController {
     private UserService userService;
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @PostMapping("/register")
     public ResponseEntity<UserResponse> registerUser(@RequestBody @Valid CreateUserRequest userRequest) {
-        var userResponse = userService.createUser(userRequest);
+        var userResponse = userService.createUser(userRequest, UserRole.CUSTOMER);
+        var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(userResponse.getId()).toUri();
+        return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.LOCATION, String.valueOf(location)).body(userResponse);
+    }
+
+    @PostMapping("/admin/register")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<UserResponse> registerAdminUser(@RequestBody @Valid CreateUserRequest userRequest) {
+        var userResponse = userService.createUser(userRequest, UserRole.ADMIN);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(userResponse.getId()).toUri();
         return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.LOCATION, String.valueOf(location)).body(userResponse);

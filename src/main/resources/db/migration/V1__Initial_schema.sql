@@ -102,21 +102,21 @@ INSERT INTO Book (title, author_id, price, stock, isbn, published_date)
 VALUES ('Harry Potter and the Sorcerer''s Stone', 2, 899.99, 15, '978-0-7475-3269-9', '1997-06-26');
 
 -- Book-Genre Relationships
-INSERT INTO Book_Genre (book_id, genre_id) VALUES (1, 1); -- The Alchemist - Fiction
-INSERT INTO Book_Genre (book_id, genre_id) VALUES (1, 2); -- The Alchemist - Drama
-INSERT INTO Book_Genre (book_id, genre_id) VALUES (2, 1); -- Harry Potter - Fiction
-INSERT INTO Book_Genre (book_id, genre_id) VALUES (2, 3); -- Harry Potter - Fantasy
+INSERT INTO Book_Genre (book_id, genre_id) VALUES (1, 1);
+INSERT INTO Book_Genre (book_id, genre_id) VALUES (1, 2);
+INSERT INTO Book_Genre (book_id, genre_id) VALUES (2, 1);
+INSERT INTO Book_Genre (book_id, genre_id) VALUES (2, 3);
 
 -- User
 INSERT INTO users (username, password, role, email) VALUES ('admin', 'admin123', 'ADMIN', 'admin@bookstore.com');
 INSERT INTO users (username, password, role, email) VALUES ('john_doe', 'admin123', 'CUSTOMER', 'john@example.com');
 
 -- Cart
-INSERT INTO Cart (user_id, total_price) VALUES (2, 0.0); -- john_doe's cart
+INSERT INTO Cart (user_id, total_price) VALUES (2, 0.0);
 
 -- Orders
 INSERT INTO purchase_order (user_id, total_cost, status) VALUES (2, 2499.95, 'PENDING');
 
 -- Order Items
-INSERT INTO Order_Item (order_id, book_id, quantity, price) VALUES (1, 1, 2, 999.98); -- 2 Alchemists
-INSERT INTO Order_Item (order_id, book_id, quantity, price) VALUES (1, 2, 1, 899.99); -- 1 Harry Potter
+INSERT INTO Order_Item (order_id, book_id, quantity, price) VALUES (1, 1, 2, 999.98);
+INSERT INTO Order_Item (order_id, book_id, quantity, price) VALUES (1, 2, 1, 899.99);
