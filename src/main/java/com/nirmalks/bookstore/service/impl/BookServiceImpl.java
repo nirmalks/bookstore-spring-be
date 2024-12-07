@@ -2,16 +2,19 @@ package com.nirmalks.bookstore.service.impl;
 
 import com.nirmalks.bookstore.dto.BookDto;
 import com.nirmalks.bookstore.dto.BookRequest;
+import com.nirmalks.bookstore.dto.PageRequestDto;
 import com.nirmalks.bookstore.exception.ResourceNotFoundException;
 import com.nirmalks.bookstore.mapper.BookMapper;
 import com.nirmalks.bookstore.repository.BookRepository;
 import com.nirmalks.bookstore.service.AuthorService;
 import com.nirmalks.bookstore.service.BookService;
 import com.nirmalks.bookstore.service.GenreService;
+import com.nirmalks.bookstore.utils.RequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -25,8 +28,9 @@ public class BookServiceImpl implements BookService {
     private GenreService genreService;
 
     @Override
-    public List<BookDto> getAllBooks() {
-        return bookRepository.findAll().stream().map(BookMapper::toDTO).toList();
+    public Page<BookDto> getAllBooks(PageRequestDto pageRequestDto) {
+        Pageable pageable = RequestUtils.getPageable(pageRequestDto);
+        return bookRepository.findAll(pageable).map(BookMapper::toDTO);
     }
 
     @Override
@@ -57,17 +61,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> getBooksByGenre(String genre) {
+    public Page<BookDto> getBooksByGenre(String genre, PageRequestDto pageRequestDto) {
         genreService.validateGenreName(genre);
-        var books = bookRepository.findAllByGenresName(genre);
-        return books.stream().map(BookMapper::toDTO).toList();
+        var pageable = RequestUtils.getPageable(pageRequestDto);
+        var books = bookRepository.findAllByGenresName(genre, pageable);
+        return books.map(BookMapper::toDTO);
     }
 
     @Override
-    public List<BookDto> getBooksByAuthor(Long authorId) {
+    public Page<BookDto> getBooksByAuthor(Long authorId, PageRequestDto pageRequestDto) {
         authorService.getAuthorById(authorId);
-        var books = bookRepository.findAllByAuthorsId(authorId);
-        return books.stream().map(BookMapper::toDTO).toList();
+        var pageable = RequestUtils.getPageable(pageRequestDto);
+        var books = bookRepository.findAllByAuthorsId(authorId, pageable);
+        return books.map(BookMapper::toDTO);
     }
 
     @Override

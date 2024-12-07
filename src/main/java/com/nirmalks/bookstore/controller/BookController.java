@@ -2,16 +2,16 @@ package com.nirmalks.bookstore.controller;
 
 import com.nirmalks.bookstore.dto.BookDto;
 import com.nirmalks.bookstore.dto.BookRequest;
+import com.nirmalks.bookstore.dto.PageRequestDto;
 import com.nirmalks.bookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/books")
@@ -20,8 +20,9 @@ public class BookController {
     private BookService bookService;
 
     @GetMapping
-    public List<BookDto> getAllBooks() {
-        return bookService.getAllBooks();
+    public Page<BookDto> getAllBooks(PageRequestDto pageRequestDto
+    ) {
+        return bookService.getAllBooks(pageRequestDto);
     }
 
     @GetMapping("/{id}")
@@ -52,13 +53,16 @@ public class BookController {
     }
 
     @GetMapping("/{name}")
-    public List<BookDto> getBookByGenre(@PathVariable String name) {
-        return bookService.getBooksByGenre(name);
+    public Page<BookDto> getBookByGenre(@PathVariable String name,
+    PageRequestDto pageRequestDto) {
+        return bookService.getBooksByGenre(name, pageRequestDto);
     }
 
     @GetMapping("/author/{id}")
-    public List<BookDto> getBookByAuthor(@PathVariable Long id) {
-        return bookService.getBooksByAuthor(id);
+    public Page<BookDto> getBookByAuthor(@PathVariable Long id,
+                                         @PathVariable String name,
+                                         PageRequestDto pageRequestDto) {
+        return bookService.getBooksByAuthor(id, pageRequestDto);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

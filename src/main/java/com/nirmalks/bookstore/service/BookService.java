@@ -2,16 +2,16 @@ package com.nirmalks.bookstore.service;
 
 import com.nirmalks.bookstore.dto.BookDto;
 import com.nirmalks.bookstore.dto.BookRequest;
-
-import java.util.List;
+import com.nirmalks.bookstore.dto.PageRequestDto;
+import org.springframework.data.domain.Page;
 
 public interface BookService {
-    List<BookDto> getAllBooks();
+    Page<BookDto> getAllBooks(PageRequestDto pageRequestDto);
     BookDto getBookById(Long id);
     BookDto createBook(BookRequest bookRequest);
     BookDto updateBook(Long id, BookRequest bookRequest);
     void deleteBookById(Long id);
-    List<BookDto> getBooksByGenre(String genre);
-    List<BookDto> getBooksByAuthor(Long authorId);
+    Page<BookDto> getBooksByGenre(String genre, PageRequestDto pageRequestDto);
+    Page<BookDto> getBooksByAuthor(Long authorId, PageRequestDto pageRequestDto);
     void updateBookStock(Long bookId, int quantity);
 }

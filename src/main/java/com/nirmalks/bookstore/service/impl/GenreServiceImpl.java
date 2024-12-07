@@ -2,15 +2,19 @@ package com.nirmalks.bookstore.service.impl;
 
 import com.nirmalks.bookstore.dto.GenreDto;
 import com.nirmalks.bookstore.dto.GenreRequest;
+import com.nirmalks.bookstore.dto.PageRequestDto;
 import com.nirmalks.bookstore.entity.Genre;
 import com.nirmalks.bookstore.exception.ResourceNotFoundException;
 import com.nirmalks.bookstore.mapper.GenreMapper;
 import com.nirmalks.bookstore.repository.GenreRepository;
 import com.nirmalks.bookstore.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+import static com.nirmalks.bookstore.utils.RequestUtils.getPageable;
 
 @Service
 public class GenreServiceImpl implements GenreService {
@@ -36,8 +40,8 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public List<GenreDto> getAllGenres() {
-        return genreRepository.findAll().stream().map(GenreMapper::toDto).toList();
+    public Page<GenreDto> getAllGenres(PageRequestDto pageRequestDto) {
+        return genreRepository.findAll(getPageable(pageRequestDto)).map(GenreMapper::toDto);
     }
 
     @Override

@@ -54,6 +54,7 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request)  {
         List<String> excludedPaths = List.of(
+                "/api/admin/register",
                 "/api/register",
                 "/api/login",
                 "/swagger-ui/",

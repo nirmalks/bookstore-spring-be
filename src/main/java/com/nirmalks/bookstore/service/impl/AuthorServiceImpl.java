@@ -2,16 +2,19 @@ package com.nirmalks.bookstore.service.impl;
 
 import com.nirmalks.bookstore.dto.AuthorDto;
 import com.nirmalks.bookstore.dto.AuthorRequest;
+import com.nirmalks.bookstore.dto.PageRequestDto;
 import com.nirmalks.bookstore.entity.Author;
 import com.nirmalks.bookstore.exception.ResourceNotFoundException;
 import com.nirmalks.bookstore.mapper.AuthorMapper;
 import com.nirmalks.bookstore.repository.AuthorRepository;
 import com.nirmalks.bookstore.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
+import static com.nirmalks.bookstore.utils.RequestUtils.getPageable;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
@@ -43,11 +46,9 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<AuthorDto> getAllAuthors() {
-        return authorRepository.findAll()
-                .stream()
-                .map(AuthorMapper::toDto)
-                .collect(Collectors.toList());
+    public Page<AuthorDto> getAllAuthors(PageRequestDto pageRequestDto) {
+        return authorRepository.findAll(getPageable(pageRequestDto))
+                .map(AuthorMapper::toDto);
     }
 
     @Override

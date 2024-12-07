@@ -1,9 +1,6 @@
 package com.nirmalks.bookstore.service.impl;
 
-import com.nirmalks.bookstore.dto.CreateUserRequest;
-import com.nirmalks.bookstore.dto.LoginResponse;
-import com.nirmalks.bookstore.dto.UpdateUserRequest;
-import com.nirmalks.bookstore.dto.UserResponse;
+import com.nirmalks.bookstore.dto.*;
 import com.nirmalks.bookstore.entity.User;
 import com.nirmalks.bookstore.entity.UserRole;
 import com.nirmalks.bookstore.exception.ResourceNotFoundException;
@@ -12,11 +9,13 @@ import com.nirmalks.bookstore.repository.UserRepository;
 import com.nirmalks.bookstore.service.UserService;
 import com.nirmalks.bookstore.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+
+import static com.nirmalks.bookstore.utils.RequestUtils.getPageable;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -25,9 +24,10 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
+    
     @Override
-    public List<UserResponse> getUsers() {
-        return userRepository.findAll().stream().map(UserMapper::toResponse).toList();
+    public Page<UserResponse> getUsers(PageRequestDto pageRequestDto) {
+        return userRepository.findAll(getPageable(pageRequestDto)).map(UserMapper::toResponse);
     }
 
     @Override

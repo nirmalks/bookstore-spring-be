@@ -1,20 +1,20 @@
 package com.nirmalks.bookstore.controller;
 
 import com.nirmalks.bookstore.dto.CreateUserRequest;
+import com.nirmalks.bookstore.dto.PageRequestDto;
 import com.nirmalks.bookstore.dto.UpdateUserRequest;
 import com.nirmalks.bookstore.dto.UserResponse;
 import com.nirmalks.bookstore.entity.UserRole;
 import com.nirmalks.bookstore.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -24,8 +24,8 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping()
-    public List<UserResponse> getUsers() {
-        return userService.getUsers();
+    public Page<UserResponse> getUsers(PageRequestDto pageRequestDto) {
+        return userService.getUsers(pageRequestDto);
     }
 
     @GetMapping("/{id}")

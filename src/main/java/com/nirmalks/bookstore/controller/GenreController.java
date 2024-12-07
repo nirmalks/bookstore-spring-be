@@ -2,8 +2,10 @@ package com.nirmalks.bookstore.controller;
 
 import com.nirmalks.bookstore.dto.GenreDto;
 import com.nirmalks.bookstore.dto.GenreRequest;
+import com.nirmalks.bookstore.dto.PageRequestDto;
 import com.nirmalks.bookstore.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/genres")
@@ -21,8 +22,8 @@ public class GenreController {
     private GenreService genreService;
 
     @GetMapping
-    public List<GenreDto> getAllGenres() {
-        return genreService.getAllGenres();
+    public Page<GenreDto> getAllGenres(PageRequestDto pageRequestDto) {
+        return genreService.getAllGenres(pageRequestDto);
     }
 
     @GetMapping("/{id}")
