@@ -6,12 +6,15 @@ import com.nirmalks.bookstore.dto.PageRequestDto;
 import com.nirmalks.bookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/api/books")
@@ -69,5 +72,19 @@ public class BookController {
     @PutMapping("/{id}/{quantity}")
     public void updateBookStock(@PathVariable Long id, @PathVariable int quantity) {
         bookService.updateBookStock(id, quantity);
+    }
+
+    @GetMapping("/search")
+    public Page<BookDto> searchBooks(
+            @RequestParam String searchParam,
+            @RequestParam(required = false) String genre,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        return bookService.getFilteredBooks(searchParam, genre, startDate, endDate, minPrice, maxPrice, page, size);
     }
 }

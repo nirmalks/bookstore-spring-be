@@ -3,6 +3,8 @@ package com.nirmalks.bookstore.service.impl;
 import com.nirmalks.bookstore.dto.BookDto;
 import com.nirmalks.bookstore.dto.BookRequest;
 import com.nirmalks.bookstore.dto.PageRequestDto;
+import com.nirmalks.bookstore.entity.Book;
+import com.nirmalks.bookstore.entity.BookSpecification;
 import com.nirmalks.bookstore.exception.ResourceNotFoundException;
 import com.nirmalks.bookstore.mapper.BookMapper;
 import com.nirmalks.bookstore.repository.BookRepository;
@@ -12,8 +14,12 @@ import com.nirmalks.bookstore.service.GenreService;
 import com.nirmalks.bookstore.utils.RequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 
 @Service
@@ -82,5 +88,24 @@ public class BookServiceImpl implements BookService {
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found with ID: " + bookId));
         book.setStock(quantity);
         bookRepository.save(book);
+    }
+
+    @Override
+    public Page<BookDto> getFilteredBooks(String searchParam,
+                                                    String genre,
+                                                    LocalDate startDate,
+                                                    LocalDate endDate,
+                                                    Double minPrice,
+                                                    Double maxPrice,
+                                                    int page,
+                                                    int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Specification<Book> specification = BookSpecification.filterBy(searchParam, genre,
+                startDate, endDate, minPrice, maxPrice);
+        System.out.println(specification);
+        Page<Book> result = bookRepository.findAll(specification, pageable);
+        System.out.println(result);
+        return bookRepository.findAll(specification, pageable).map(BookMapper::toDTO);
+
     }
 }

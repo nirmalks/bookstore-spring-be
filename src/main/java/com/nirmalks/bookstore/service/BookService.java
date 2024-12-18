@@ -5,6 +5,8 @@ import com.nirmalks.bookstore.dto.BookRequest;
 import com.nirmalks.bookstore.dto.PageRequestDto;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
+
 public interface BookService {
     Page<BookDto> getAllBooks(PageRequestDto pageRequestDto);
     BookDto getBookById(Long id);
@@ -14,4 +16,6 @@ public interface BookService {
     Page<BookDto> getBooksByGenre(String genre, PageRequestDto pageRequestDto);
     Page<BookDto> getBooksByAuthor(Long authorId, PageRequestDto pageRequestDto);
     void updateBookStock(Long bookId, int quantity);
+
+    Page<BookDto> getFilteredBooks(String searchParam, String genre, LocalDate startDate, LocalDate endDate, Double minPrice, Double maxPrice, int page, int size);
 }

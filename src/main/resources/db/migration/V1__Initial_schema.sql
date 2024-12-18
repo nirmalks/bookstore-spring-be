@@ -108,8 +108,8 @@ INSERT INTO Book_Genre (book_id, genre_id) VALUES (2, 1);
 INSERT INTO Book_Genre (book_id, genre_id) VALUES (2, 3);
 
 -- User
-INSERT INTO users (username, password, role, email) VALUES ('admin', 'admin123', 'ADMIN', 'admin@bookstore.com');
-INSERT INTO users (username, password, role, email) VALUES ('john_doe', 'admin123', 'CUSTOMER', 'john@example.com');
+INSERT INTO users (username, password, role, email) VALUES ('admin', '$2a$10$sZmiMKlNc1I0fxsA5.OL7u7CJkiGrjI21wDWqrW/vunljwKalZpLK', 'ADMIN', 'admin@bookstore.com');
+INSERT INTO users (username, password, role, email) VALUES ('john_doe', '$2a$10$sZmiMKlNc1I0fxsA5.OL7u7CJkiGrjI21wDWqrW/vunljwKalZpLK', 'CUSTOMER', 'john@example.com');
 
 -- Cart
 INSERT INTO Cart (user_id, total_price) VALUES (2, 0.0);
@@ -120,3 +120,7 @@ INSERT INTO purchase_order (user_id, total_cost, status) VALUES (2, 2499.95, 'PE
 -- Order Items
 INSERT INTO Order_Item (order_id, book_id, quantity, price) VALUES (1, 1, 2, 999.98);
 INSERT INTO Order_Item (order_id, book_id, quantity, price) VALUES (1, 2, 1, 899.99);
+
+-- Book_Author Relationships
+INSERT INTO Book_Author (book_id, author_id) VALUES (1, 1); -- The Alchemist with Paulo Coelho
+INSERT INTO Book_Author (book_id, author_id) VALUES (2, 2); -- Harry Potter with J.K. Rowling
