@@ -132,6 +132,13 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/co.elastic.logging/logback-ecs-encoder -->
+		<dependency>
+			<groupId>co.elastic.logging</groupId>
+			<artifactId>logback-ecs-encoder</artifactId>
+			<version>1.6.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
