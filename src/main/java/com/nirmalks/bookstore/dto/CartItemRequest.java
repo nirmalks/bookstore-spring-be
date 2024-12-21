@@ -23,4 +23,12 @@ public class CartItemRequest {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
+    @Override
+    public String toString() {
+        return "CartItemRequest{" +
+                "bookId=" + bookId +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

@@ -17,6 +17,13 @@ public class LoginRequest {
         this.username = username;
     }
 
+    @Override
+    public String toString() {
+        return "LoginRequest{" +
+                "username='" + username + '\'' +
+                '}';
+    }
+
     public @NotBlank String getPassword() {
         return password;
     }

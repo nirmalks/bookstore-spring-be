@@ -24,4 +24,12 @@ public class AuthorRequest {
     public void setBio(String bio) {
         this.bio = bio;
     }
+
+    @Override
+    public String toString() {
+        return "AuthorRequest{" +
+                "name='" + name + '\'' +
+                ", bio='" + bio + '\'' +
+                '}';
+    }
 }

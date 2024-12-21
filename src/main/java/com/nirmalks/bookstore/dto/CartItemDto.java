@@ -45,4 +45,14 @@ public class CartItemDto {
         this.quantity = quantity;
         this.price = price;
     }
+
+    @Override
+    public String toString() {
+        return "CartItemDto{" +
+                "id=" + id +
+                ", bookId=" + bookId +
+                ", quantity=" + quantity +
+                ", price=" + price +
+                '}';
+    }
 }

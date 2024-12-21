@@ -30,4 +30,13 @@ public class CartDto {
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
+
+    @Override
+    public String toString() {
+        return "CartDto{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", totalPrice=" + totalPrice +
+                '}';
+    }
 }

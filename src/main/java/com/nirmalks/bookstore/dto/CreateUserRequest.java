@@ -39,4 +39,12 @@ public class CreateUserRequest {
     public void setEmail(@Email(message = "Invalid email address") String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "CreateUserRequest{" +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                '}';
+    }
 }

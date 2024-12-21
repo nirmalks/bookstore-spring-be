@@ -76,4 +76,17 @@ public class BookRequest {
     public void setGenreIds(List<Long> genreIds) {
         this.genreIds = genreIds;
     }
+
+    @Override
+    public String toString() {
+        return "BookRequest{" +
+                "title='" + title + '\'' +
+                ", authorIds=" + authorIds +
+                ", price=" + price +
+                ", stock=" + stock +
+                ", isbn='" + isbn + '\'' +
+                ", publishedDate=" + publishedDate +
+                ", genreIds=" + genreIds +
+                '}';
+    }
 }

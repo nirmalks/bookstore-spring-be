@@ -49,4 +49,15 @@ public class OrderSummaryDto {
     public void setItems(List<OrderItemDto> items) {
         this.items = items;
     }
+
+    @Override
+    public String toString() {
+        return "OrderSummaryDto{" +
+                "id=" + id +
+                ", status='" + status + '\'' +
+                ", placedDate=" + placedDate +
+                ", totalCost=" + totalCost +
+                ", items=" + items +
+                '}';
+    }
 }

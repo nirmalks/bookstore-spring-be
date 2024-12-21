@@ -23,4 +23,12 @@ public class OrderFromCartRequest {
     public void setUserId(Long userId) {
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return "OrderFromCartRequest{" +
+                "cartId=" + cartId +
+                ", userId=" + userId +
+                '}';
+    }
 }

@@ -4,6 +4,9 @@ import com.nirmalks.bookstore.dto.BookDto;
 import com.nirmalks.bookstore.dto.BookRequest;
 import com.nirmalks.bookstore.dto.PageRequestDto;
 import com.nirmalks.bookstore.service.BookService;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -19,6 +22,7 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
+    private static final Logger LOG = LogManager.getLogger(BookController.class);
     @Autowired
     private BookService bookService;
 
@@ -84,7 +88,7 @@ public class BookController {
             @RequestParam(required = false) Double maxPrice,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-
+        LOG.log(Level.INFO, "search triggered");
         return bookService.getFilteredBooks(searchParam, genre, startDate, endDate, minPrice, maxPrice, page, size);
     }
 }

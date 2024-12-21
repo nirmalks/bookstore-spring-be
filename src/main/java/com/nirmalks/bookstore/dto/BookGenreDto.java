@@ -19,4 +19,12 @@ public class BookGenreDto {
     public void setGenreId(Long genreId) {
         this.genreId = genreId;
     }
+
+    @Override
+    public String toString() {
+        return "BookGenreDto{" +
+                "bookId=" + bookId +
+                ", genreId=" + genreId +
+                '}';
+    }
 }

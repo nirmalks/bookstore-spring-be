@@ -32,6 +32,16 @@ public class UserResponse {
         this.username = username;
     }
 
+    @Override
+    public String toString() {
+        return "UserResponse{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", userRole=" + userRole +
+                '}';
+    }
+
     public String getEmail() {
         return email;
     }

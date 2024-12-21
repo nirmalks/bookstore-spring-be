@@ -15,6 +15,15 @@ public class LoginResponse {
         this.role = role;
     }
 
+    @Override
+    public String toString() {
+        return "LoginResponse{" +
+                ", username='" + username + '\'' +
+                ", userId=" + userId +
+                ", role='" + role + '\'' +
+                '}';
+    }
+
     public String getToken() {
         return token;
     }

@@ -13,4 +13,11 @@ public class GenreRequest {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "GenreRequest{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }

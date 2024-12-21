@@ -49,4 +49,15 @@ public class OrderDto {
     public void setPlacedDate(LocalDateTime placedDate) {
         this.placedDate = placedDate;
     }
+
+    @Override
+    public String toString() {
+        return "OrderDto{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", totalCost=" + totalCost +
+                ", status='" + status + '\'' +
+                ", placedDate=" + placedDate +
+                '}';
+    }
 }

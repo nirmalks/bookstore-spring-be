@@ -46,5 +46,15 @@ public class PageRequestDto {
     public void setSortOrder(String sortOrder) {
         this.sortOrder = sortOrder;
     }
+
+    @Override
+    public String toString() {
+        return "PageRequestDto{" +
+                "page=" + page +
+                ", size=" + size +
+                ", sortKey='" + sortKey + '\'' +
+                ", sortOrder='" + sortOrder + '\'' +
+                '}';
+    }
 }
 

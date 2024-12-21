@@ -87,4 +87,18 @@ public class BookDto {
         this.publishedDate = publishedDate;
         this.genreIds = genreIds;
     }
+
+    @Override
+    public String toString() {
+        return "BookDto{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", authorIds=" + authorIds +
+                ", price=" + price +
+                ", stock=" + stock +
+                ", isbn='" + isbn + '\'' +
+                ", publishedDate=" + publishedDate +
+                ", genreIds=" + genreIds +
+                '}';
+    }
 }

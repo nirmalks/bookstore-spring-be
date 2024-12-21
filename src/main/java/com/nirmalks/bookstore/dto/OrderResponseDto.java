@@ -29,4 +29,13 @@ public class OrderResponseDto {
     public void setUser(UserDto user) {
         this.user = user;
     }
+
+    @Override
+    public String toString() {
+        return "OrderResponseDto{" +
+                "message='" + message + '\'' +
+                ", order=" + order +
+                ", user=" + user +
+                '}';
+    }
 }
