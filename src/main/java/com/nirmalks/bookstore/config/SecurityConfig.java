@@ -2,6 +2,7 @@ package com.nirmalks.bookstore.config;
 
 import com.nirmalks.bookstore.filter.JwtTokenGeneratorFilter;
 import com.nirmalks.bookstore.filter.JwtTokenValidatorFilter;
+import com.nirmalks.bookstore.security.CustomAuthenticationEntryPoint;
 import com.nirmalks.bookstore.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -25,12 +26,16 @@ public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
 
+    @Autowired
+    CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/admin/register", "/api/register", "/api/login").permitAll()
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .sessionManagement(sessionManagementConfigurer -> sessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                         .cors(corsConfig -> corsConfig.configurationSource(request -> {
                             CorsConfiguration configuration = new CorsConfiguration();
