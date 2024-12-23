@@ -1,6 +1,6 @@
 package com.nirmalks.bookstore.security;
 
-import com.nirmalks.bookstore.entity.User;
+import com.nirmalks.bookstore.user.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
