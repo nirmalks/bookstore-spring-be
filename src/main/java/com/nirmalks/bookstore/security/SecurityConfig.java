@@ -30,7 +30,7 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/api/admin/register", "/api/register", "/api/login", "/favicon.ico", "/swagger-ui/**", "/v3/api-docs/**"
+                        .requestMatchers("/api/admin/register", "/api/register", "/api/login", "/swagger-ui/**", "/v3/api-docs/**"
                               ).permitAll()
                         .anyRequest().authenticated()
                 )
