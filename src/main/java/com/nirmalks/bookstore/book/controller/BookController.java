@@ -1,12 +1,10 @@
 package com.nirmalks.bookstore.book.controller;
 
-import com.nirmalks.bookstore.book.dto.BookDto;
 import com.nirmalks.bookstore.book.api.BookRequest;
-import com.nirmalks.bookstore.common.PageRequestDto;
+import com.nirmalks.bookstore.book.dto.BookDto;
 import com.nirmalks.bookstore.book.service.BookService;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.nirmalks.bookstore.common.PageRequestDto;
+import com.nirmalks.bookstore.common.RestPage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,12 +20,11 @@ import java.time.LocalDate;
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
-    private static final Logger LOG = LogManager.getLogger(BookController.class);
     @Autowired
     private BookService bookService;
 
     @GetMapping
-    public Page<BookDto> getAllBooks(PageRequestDto pageRequestDto
+    public RestPage<BookDto> getAllBooks(PageRequestDto pageRequestDto
     ) {
         return bookService.getAllBooks(pageRequestDto);
     }
@@ -88,7 +85,6 @@ public class BookController {
             @RequestParam(required = false) Double maxPrice,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        LOG.log(Level.INFO, "search triggered");
         return bookService.getFilteredBooks(searchParam, genre, startDate, endDate, minPrice, maxPrice, page, size);
     }
 }

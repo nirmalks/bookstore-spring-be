@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleGeneralException(Exception ex) {
         ErrorResponse response = new ErrorResponse(
                 ex.getMessage(),
-                HttpStatus.FORBIDDEN.value(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 List.of("Unknown error")
         );
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);

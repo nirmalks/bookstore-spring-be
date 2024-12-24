@@ -87,7 +87,7 @@ public class BookDto {
         this.publishedDate = publishedDate;
         this.genreIds = genreIds;
     }
-
+    public BookDto() {}
     @Override
     public String toString() {
         return "BookDto{" +

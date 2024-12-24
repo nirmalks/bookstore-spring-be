@@ -40,8 +40,6 @@ public class BookSpecification {
             return cb.or(titlePredicate, isbnPredicate, authorPredicate);
         };
     }
-
-
     private static Specification<Book> hasTitle(String title) {
         return (root, query, cb) -> title == null || title.isEmpty()
                 ? cb.conjunction()

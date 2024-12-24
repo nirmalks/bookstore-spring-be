@@ -3,6 +3,7 @@ package com.nirmalks.bookstore.book.entity;
 import com.nirmalks.bookstore.author.entity.Author;
 import com.nirmalks.bookstore.genre.entity.Genre;
 import jakarta.persistence.*;
+import org.springframework.data.redis.core.RedisHash;
 
 import java.time.LocalDate;
 import java.util.List;

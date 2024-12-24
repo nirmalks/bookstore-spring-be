@@ -1,17 +1,20 @@
 package com.nirmalks.bookstore.book.service;
 
-import com.nirmalks.bookstore.book.dto.BookDto;
-import com.nirmalks.bookstore.book.api.BookRequest;
-import com.nirmalks.bookstore.common.PageRequestDto;
-import com.nirmalks.bookstore.book.entity.Book;
-import com.nirmalks.bookstore.book.BookSpecification;
-import com.nirmalks.bookstore.exception.ResourceNotFoundException;
-import com.nirmalks.bookstore.book.dto.BookMapper;
-import com.nirmalks.bookstore.book.repository.BookRepository;
 import com.nirmalks.bookstore.author.service.AuthorService;
-import com.nirmalks.bookstore.genre.service.GenreService;
+import com.nirmalks.bookstore.book.BookSpecification;
+import com.nirmalks.bookstore.book.api.BookRequest;
+import com.nirmalks.bookstore.book.dto.BookDto;
+import com.nirmalks.bookstore.book.dto.BookMapper;
+import com.nirmalks.bookstore.book.entity.Book;
+import com.nirmalks.bookstore.book.repository.BookRepository;
+import com.nirmalks.bookstore.common.PageRequestDto;
 import com.nirmalks.bookstore.common.RequestUtils;
+import com.nirmalks.bookstore.common.RestPage;
+import com.nirmalks.bookstore.exception.ResourceNotFoundException;
+import com.nirmalks.bookstore.genre.service.GenreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -33,18 +36,21 @@ public class BookServiceImpl implements BookService {
     private GenreService genreService;
 
     @Override
-    public Page<BookDto> getAllBooks(PageRequestDto pageRequestDto) {
+    @Cacheable(value = "books", key = "#pageRequestDto.page")
+    public RestPage<BookDto> getAllBooks(PageRequestDto pageRequestDto) {
         Pageable pageable = RequestUtils.getPageable(pageRequestDto);
-        return bookRepository.findAll(pageable).map(BookMapper::toDTO);
+        return new RestPage<>(bookRepository.findAll(pageable).map(BookMapper::toDTO));
     }
 
     @Override
+    @Cacheable(value = "book", key = "#id")
     public BookDto getBookById(Long id) {
         return bookRepository.findById(id).map(BookMapper::toDTO)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found"));
     }
 
     @Override
+    @CacheEvict(value = {"books", "book"}, allEntries = true)
     public BookDto createBook(BookRequest bookRequest) {
         var authors = authorService.getAuthorsByIds(bookRequest.getAuthorIds());
         var genres = genreService.getGenresByIds(bookRequest.getGenreIds());
@@ -52,6 +58,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @CacheEvict(value = {"books", "book"}, key = "#id")
     public BookDto updateBook(Long id, BookRequest bookRequest) {
         var existingBook = bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book not found"));
         var authors = authorService.getAuthorsByIds(bookRequest.getAuthorIds());
@@ -60,6 +67,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    @CacheEvict(value = {"books", "book"}, key = "#id")
     public void deleteBookById(Long id) {
         bookRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("book not found"));
         bookRepository.deleteById(id);
@@ -101,9 +109,6 @@ public class BookServiceImpl implements BookService {
         Pageable pageable = PageRequest.of(page, size);
         Specification<Book> specification = BookSpecification.filterBy(searchParam, genre,
                 startDate, endDate, minPrice, maxPrice);
-        System.out.println(specification);
-        Page<Book> result = bookRepository.findAll(specification, pageable);
-        System.out.println(result);
         return bookRepository.findAll(specification, pageable).map(BookMapper::toDTO);
 
     }
