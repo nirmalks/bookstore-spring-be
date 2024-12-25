@@ -5,6 +5,7 @@ import com.nirmalks.bookstore.security.filter.JwtTokenValidatorFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,6 +33,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/api/admin/register", "/api/users/register", "/api/login", "/swagger-ui/**", "/v3/api-docs/**"
                               ).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/books/**" ,"/api/books").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(customAuthenticationEntryPoint))

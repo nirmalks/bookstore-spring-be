@@ -58,7 +58,9 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
                 "/api/users/register",
                 "/api/login",
                 "/swagger-ui/",
-                "/v3/api-docs"
+                "/v3/api-docs",
+                "/api/books",
+                "/api/books/**"
         );
         String requestPath = request.getServletPath();
         return excludedPaths.stream().anyMatch(requestPath::startsWith);
