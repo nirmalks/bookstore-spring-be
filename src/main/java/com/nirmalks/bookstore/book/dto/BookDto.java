@@ -12,6 +12,24 @@ public class BookDto {
     private String isbn;
     private LocalDate publishedDate;
     private List<Long> genreIds;
+    private String description;
+    private String imagePath;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 
     public Long getId() {
         return id;
@@ -77,7 +95,8 @@ public class BookDto {
         this.publishedDate = publishedDate;
     }
 
-    public BookDto(Long id, String title, List<Long> authorIds, Double price, int stock, String isbn, LocalDate publishedDate, List<Long> genreIds) {
+    public BookDto(Long id, String title, List<Long> authorIds, Double price, int stock, String isbn, LocalDate publishedDate, List<Long> genreIds,
+                   String description, String imagePath) {
         this.id = id;
         this.title = title;
         this.authorIds = authorIds;
@@ -86,8 +105,11 @@ public class BookDto {
         this.isbn = isbn;
         this.publishedDate = publishedDate;
         this.genreIds = genreIds;
+        this.description = description;
+        this.imagePath = imagePath;
     }
     public BookDto() {}
+
     @Override
     public String toString() {
         return "BookDto{" +
@@ -99,6 +121,8 @@ public class BookDto {
                 ", isbn='" + isbn + '\'' +
                 ", publishedDate=" + publishedDate +
                 ", genreIds=" + genreIds +
+                ", description='" + description + '\'' +
+                ", imagePath='" + imagePath + '\'' +
                 '}';
     }
 }

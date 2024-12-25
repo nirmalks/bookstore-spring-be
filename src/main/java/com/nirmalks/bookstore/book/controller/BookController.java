@@ -56,7 +56,7 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @GetMapping("/{name}")
+    @GetMapping("/genre/{name}")
     public Page<BookDto> getBookByGenre(@PathVariable String name,
     PageRequestDto pageRequestDto) {
         return bookService.getBooksByGenre(name, pageRequestDto);

@@ -17,7 +17,9 @@ public class BookMapper {
                 book.getStock(),
                 book.getIsbn(),
                 book.getPublishedDate(),
-                book.getGenres().stream().map((Genre::getId)).toList()
+                book.getGenres().stream().map((Genre::getId)).toList(),
+                book.getDescription(),
+                book.getImagePath()
         );
     }
 
@@ -30,6 +32,8 @@ public class BookMapper {
         book.setIsbn(bookRequest.getIsbn());
         book.setPublishedDate(bookRequest.getPublishedDate());
         book.setGenres(genres);
+        book.setDescription(bookRequest.getDescription());
+        book.setImagePath(bookRequest.getImagePath());
         return book;
     }
 
@@ -41,6 +45,8 @@ public class BookMapper {
         book.setIsbn(bookRequest.getIsbn());
         book.setPublishedDate(bookRequest.getPublishedDate());
         book.setGenres(genres);
+        book.setDescription(bookRequest.getDescription());
+        book.setImagePath(bookRequest.getImagePath());
         return book;
     }
 }

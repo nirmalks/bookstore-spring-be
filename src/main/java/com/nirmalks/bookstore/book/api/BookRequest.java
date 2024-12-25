@@ -21,6 +21,26 @@ public class BookRequest {
     @NotNull
     private List<Long> genreIds;
 
+    private String description;
+
+    private String imagePath;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     public String getTitle() {
         return title;
     }
