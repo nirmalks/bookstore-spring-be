@@ -98,7 +98,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Page<BookDto> getFilteredBooks(String searchParam,
+    public Page<BookDto> getFilteredBooks(String search,
                                                     String genre,
                                                     LocalDate startDate,
                                                     LocalDate endDate,
@@ -107,7 +107,7 @@ public class BookServiceImpl implements BookService {
                                                     int page,
                                                     int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Specification<Book> specification = BookSpecification.filterBy(searchParam, genre,
+        Specification<Book> specification = BookSpecification.filterBy(search, genre,
                 startDate, endDate, minPrice, maxPrice);
         return bookRepository.findAll(specification, pageable).map(BookMapper::toDTO);
 

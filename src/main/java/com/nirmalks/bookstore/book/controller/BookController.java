@@ -77,7 +77,7 @@ public class BookController {
 
     @GetMapping("/search")
     public Page<BookDto> searchBooks(
-            @RequestParam String searchParam,
+            @RequestParam(required = false, defaultValue = "") String search,
             @RequestParam(required = false) String genre,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
@@ -85,6 +85,9 @@ public class BookController {
             @RequestParam(required = false) Double maxPrice,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        return bookService.getFilteredBooks(searchParam, genre, startDate, endDate, minPrice, maxPrice, page, size);
+        if(search.isBlank()) {
+            return bookService.getAllBooks(new PageRequestDto());
+        }
+        return bookService.getFilteredBooks(search, genre, startDate, endDate, minPrice, maxPrice, page, size);
     }
 }

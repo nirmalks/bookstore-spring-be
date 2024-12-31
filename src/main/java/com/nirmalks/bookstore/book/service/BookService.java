@@ -18,5 +18,5 @@ public interface BookService {
     Page<BookDto> getBooksByAuthor(Long authorId, PageRequestDto pageRequestDto);
     void updateBookStock(Long bookId, int quantity);
 
-    Page<BookDto> getFilteredBooks(String searchParam, String genre, LocalDate startDate, LocalDate endDate, Double minPrice, Double maxPrice, int page, int size);
+    Page<BookDto> getFilteredBooks(String search, String genre, LocalDate startDate, LocalDate endDate, Double minPrice, Double maxPrice, int page, int size);
 }
