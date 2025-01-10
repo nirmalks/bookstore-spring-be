@@ -2,6 +2,7 @@ package com.nirmalks.bookstore.order.dto;
 
 import com.nirmalks.bookstore.book.entity.Book;
 import com.nirmalks.bookstore.cart.entity.CartItem;
+import com.nirmalks.bookstore.order.api.OrderItemRequest;
 import com.nirmalks.bookstore.order.api.OrderResponse;
 import com.nirmalks.bookstore.order.entity.Order;
 import com.nirmalks.bookstore.order.entity.OrderItem;
@@ -19,14 +20,6 @@ public class OrderMapper {
         order.setOrderStatus(OrderStatus.PENDING);
         order.setPlacedDate(LocalDateTime.now());
         return order;
-    }
-
-    public static OrderItem toOrderItemEntity(Book book, OrderItemDto itemDto) {
-        var orderItem = new OrderItem();
-        orderItem.setBook(book);
-        orderItem.setQuantity(itemDto.getQuantity());
-        orderItem.setPrice(orderItem.calculateItemCost());
-        return orderItem;
     }
 
     public static OrderItem toOrderItemEntity(CartItem cartItem) {
@@ -52,5 +45,14 @@ public class OrderMapper {
         orderSummary.setPlacedDate(order.getPlacedDate());
         orderSummary.setTotalCost(order.getTotalCost());
         return orderSummary;
+    }
+
+    public static OrderItem toOrderItemEntity(Book book, OrderItemRequest itemDto, Order order) {
+        var orderItem = new OrderItem();
+        orderItem.setBook(book);
+        orderItem.setQuantity(itemDto.getQuantity());
+        orderItem.setPrice(itemDto.getPrice());
+        orderItem.setOrder(order);
+        return orderItem;
     }
 }

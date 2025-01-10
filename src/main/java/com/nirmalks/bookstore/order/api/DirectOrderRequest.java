@@ -1,13 +1,16 @@
 package com.nirmalks.bookstore.order.api;
 
-import com.nirmalks.bookstore.order.dto.OrderItemDto;
 import jakarta.validation.constraints.NotNull;
+
+import java.util.List;
 
 public class DirectOrderRequest {
     @NotNull
     Long userId;
     @NotNull
-    OrderItemDto item;
+    List<OrderItemRequest> items;
+    @NotNull
+    AddressRequest address;
 
     public Long getUserId() {
         return userId;
@@ -17,19 +20,27 @@ public class DirectOrderRequest {
         this.userId = userId;
     }
 
-    public OrderItemDto getItem() {
-        return item;
+    public @NotNull List<OrderItemRequest> getItems() {
+        return items;
     }
 
-    public void setItem(OrderItemDto item) {
-        this.item = item;
+    public void setItems(@NotNull List<OrderItemRequest> items) {
+        this.items = items;
+    }
+
+    public @NotNull AddressRequest getAddress() {
+        return address;
+    }
+
+    public void setAddress(@NotNull AddressRequest address) {
+        this.address = address;
     }
 
     @Override
     public String toString() {
         return "DirectOrderRequest{" +
                 "userId=" + userId +
-                ", item=" + item +
+                ", items=" + items +
                 '}';
     }
 }

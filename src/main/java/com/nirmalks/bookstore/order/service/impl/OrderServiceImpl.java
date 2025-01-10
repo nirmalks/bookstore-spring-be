@@ -1,14 +1,16 @@
 package com.nirmalks.bookstore.order.service.impl;
 
+import com.nirmalks.bookstore.address.mapper.AddressMapper;
+import com.nirmalks.bookstore.address.repository.AddressRepository;
 import com.nirmalks.bookstore.book.entity.Book;
 import com.nirmalks.bookstore.book.repository.BookRepository;
 import com.nirmalks.bookstore.cart.entity.Cart;
 import com.nirmalks.bookstore.cart.entity.CartItem;
 import com.nirmalks.bookstore.cart.repository.CartRepository;
+import com.nirmalks.bookstore.exception.ResourceNotFoundException;
 import com.nirmalks.bookstore.order.api.DirectOrderRequest;
 import com.nirmalks.bookstore.order.api.OrderFromCartRequest;
 import com.nirmalks.bookstore.order.api.OrderResponse;
-import com.nirmalks.bookstore.exception.ResourceNotFoundException;
 import com.nirmalks.bookstore.order.dto.OrderMapper;
 import com.nirmalks.bookstore.order.entity.Order;
 import com.nirmalks.bookstore.order.entity.OrderItem;
@@ -36,16 +38,17 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderItemRepository orderItemRepository;
     private final CartRepository cartRepository;
-
+    private final AddressRepository addressRepository;
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository,
                         BookRepository bookRepository, OrderItemRepository orderItemRepository,
-                            CartRepository cartRepository) {
+                            CartRepository cartRepository, AddressRepository addressRepository) {
         this.orderRepository = orderRepository;
         this.userRepository = userRepository;
         this.bookRepository = bookRepository;
         this.orderItemRepository = orderItemRepository;
         this.cartRepository = cartRepository;
+        this.addressRepository = addressRepository;
     }
 
     @Override
@@ -54,15 +57,21 @@ public class OrderServiceImpl implements OrderService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        var itemDto = directOrderRequest.getItem();
-        Book book = bookRepository.findById(itemDto.getBookId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Book not found for ID: " + itemDto.getBookId()));
-
-        var orderItem = OrderMapper.toOrderItemEntity(book, itemDto);
+        var itemDtos = directOrderRequest.getItems();
+        var address = AddressMapper.toEntity(directOrderRequest.getAddress());
+        address.setUser(user);
+        addressRepository.save(address);
         var order = OrderMapper.toOrderEntity(user);
-        order.setItems(List.of(orderItem));
+
+        order.setAddress(address);
         var savedOrder = orderRepository.save(order);
-        orderItemRepository.save(orderItem);
+        var orderItems = itemDtos.stream().map(itemDto -> {
+            Book book = bookRepository.findById(itemDto.getBookId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Book not found for ID: " + itemDto.getBookId()));
+            return OrderMapper.toOrderItemEntity(book, itemDto, savedOrder);
+        }).toList();
+
+        orderItemRepository.saveAll(orderItems);
         return OrderMapper.toResponse(user, savedOrder, "Order placed successfully.");
     }
 

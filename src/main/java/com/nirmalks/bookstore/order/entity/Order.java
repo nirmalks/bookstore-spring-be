@@ -1,5 +1,6 @@
 package com.nirmalks.bookstore.order.entity;
 
+import com.nirmalks.bookstore.address.Address;
 import com.nirmalks.bookstore.user.entity.User;
 import jakarta.persistence.*;
 
@@ -18,7 +19,8 @@ public class Order {
 
     private Double totalCost;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
     private OrderStatus orderStatus;
 
     @Column(name = "placed_date", nullable = false, updatable = false)
@@ -26,6 +28,17 @@ public class Order {
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
+
+    @OneToOne
+    private Address address;
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public Long getId() {
         return id;
