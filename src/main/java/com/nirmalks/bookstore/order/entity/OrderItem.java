@@ -1,5 +1,6 @@
 package com.nirmalks.bookstore.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.nirmalks.bookstore.book.entity.Book;
 import jakarta.persistence.*;
 
@@ -11,10 +12,12 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonBackReference
     private Order order;
 
     @ManyToOne
     @JoinColumn(name = "book_id")
+    @JsonBackReference
     private Book book;
 
     private double price;

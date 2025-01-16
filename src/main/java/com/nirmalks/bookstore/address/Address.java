@@ -1,5 +1,6 @@
 package com.nirmalks.bookstore.address;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.nirmalks.bookstore.user.entity.User;
 import jakarta.persistence.*;
 
@@ -20,6 +21,7 @@ public class Address {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
     User user;
 
     public User getUser() {

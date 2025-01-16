@@ -7,11 +7,14 @@ import com.nirmalks.bookstore.book.repository.BookRepository;
 import com.nirmalks.bookstore.cart.entity.Cart;
 import com.nirmalks.bookstore.cart.entity.CartItem;
 import com.nirmalks.bookstore.cart.repository.CartRepository;
+import com.nirmalks.bookstore.common.PageRequestDto;
+import com.nirmalks.bookstore.common.RequestUtils;
 import com.nirmalks.bookstore.exception.ResourceNotFoundException;
 import com.nirmalks.bookstore.order.api.DirectOrderRequest;
 import com.nirmalks.bookstore.order.api.OrderFromCartRequest;
 import com.nirmalks.bookstore.order.api.OrderResponse;
 import com.nirmalks.bookstore.order.dto.OrderMapper;
+import com.nirmalks.bookstore.order.dto.OrderSummaryDto;
 import com.nirmalks.bookstore.order.entity.Order;
 import com.nirmalks.bookstore.order.entity.OrderItem;
 import com.nirmalks.bookstore.order.entity.OrderStatus;
@@ -21,6 +24,7 @@ import com.nirmalks.bookstore.order.service.OrderService;
 import com.nirmalks.bookstore.user.entity.User;
 import com.nirmalks.bookstore.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -62,15 +66,15 @@ public class OrderServiceImpl implements OrderService {
         address.setUser(user);
         addressRepository.save(address);
         var order = OrderMapper.toOrderEntity(user);
-
         order.setAddress(address);
-        var savedOrder = orderRepository.save(order);
         var orderItems = itemDtos.stream().map(itemDto -> {
             Book book = bookRepository.findById(itemDto.getBookId())
                     .orElseThrow(() -> new ResourceNotFoundException("Book not found for ID: " + itemDto.getBookId()));
-            return OrderMapper.toOrderItemEntity(book, itemDto, savedOrder);
+            return OrderMapper.toOrderItemEntity(book, itemDto, order);
         }).toList();
-
+        order.setItems(orderItems);
+        order.setTotalCost(order.calculateTotalCost());
+        var savedOrder = orderRepository.save(order);
         orderItemRepository.saveAll(orderItems);
         return OrderMapper.toResponse(user, savedOrder, "Order placed successfully.");
     }
@@ -101,8 +105,10 @@ public class OrderServiceImpl implements OrderService {
         return OrderMapper.toResponse(user, savedOrder, "Order placed successfully.");
     }
 
-    public List<Order> getOrdersByUser(Long userId) {
-        return orderRepository.findAllByUserId(userId);
+    public Page<OrderSummaryDto> getOrdersByUser(Long userId, PageRequestDto pageRequestDto) {
+        var pageable = RequestUtils.getPageable(pageRequestDto);
+        var orders = orderRepository.findAllByUserId(userId, pageable);
+        return orders.map(OrderMapper::toOrderSummary);
     }
 
     @Override

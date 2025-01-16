@@ -1,13 +1,20 @@
 package com.nirmalks.bookstore.order.dto;
 
-import java.math.BigDecimal;
-
 public class OrderItemDto {
     private Long id;
     private Long orderId;
     private Long bookId;
     private int quantity;
-    private BigDecimal price;
+    private double price;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Long getId() {
         return id;
@@ -41,11 +48,11 @@ public class OrderItemDto {
         this.quantity = quantity;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 

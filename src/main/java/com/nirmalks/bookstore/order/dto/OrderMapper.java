@@ -44,6 +44,8 @@ public class OrderMapper {
         orderSummary.setStatus(order.getOrderStatus().toString());
         orderSummary.setPlacedDate(order.getPlacedDate());
         orderSummary.setTotalCost(order.getTotalCost());
+        orderSummary.setItems(order.getItems().stream().map(OrderMapper::toOrderItemDto).toList());
+        orderSummary.setAddress(order.getAddress());
         return orderSummary;
     }
 
@@ -54,5 +56,16 @@ public class OrderMapper {
         orderItem.setPrice(itemDto.getPrice());
         orderItem.setOrder(order);
         return orderItem;
+    }
+
+    public static OrderItemDto toOrderItemDto(OrderItem orderItem) {
+        var orderItemDto = new OrderItemDto();
+        orderItemDto.setOrderId(orderItem.getOrder().getId());
+        orderItemDto.setBookId(orderItem.getBook().getId());
+        orderItemDto.setQuantity(orderItem.getQuantity());
+        orderItemDto.setId(orderItem.getId());
+        orderItemDto.setPrice(orderItem.getPrice());
+        orderItemDto.setName(orderItem.getBook().getTitle());
+        return orderItemDto;
     }
 }

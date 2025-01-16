@@ -1,5 +1,6 @@
 package com.nirmalks.bookstore.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nirmalks.bookstore.order.entity.Order;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,7 +28,8 @@ public class User {
 
     private String email;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Order> orders;
 
     public Long getId() {

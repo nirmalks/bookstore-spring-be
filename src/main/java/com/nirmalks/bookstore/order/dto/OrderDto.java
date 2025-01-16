@@ -7,7 +7,7 @@ public class OrderDto {
     private Long id;
     private Long userId;
     private BigDecimal totalCost;
-    private String status; // PENDING, SHIPPED, CANCELLED
+    private String status;
     private LocalDateTime placedDate;
 
     public Long getId() {

@@ -1,5 +1,7 @@
 package com.nirmalks.bookstore.order.dto;
 
+import com.nirmalks.bookstore.address.Address;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,6 +11,7 @@ public class OrderSummaryDto {
     private LocalDateTime placedDate;
     private Double totalCost;
     private List<OrderItemDto> items;
+    private Address address;
 
     public Long getId() {
         return id;
@@ -48,6 +51,14 @@ public class OrderSummaryDto {
 
     public void setItems(List<OrderItemDto> items) {
         this.items = items;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     @Override

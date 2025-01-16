@@ -1,5 +1,7 @@
 package com.nirmalks.bookstore.order.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nirmalks.bookstore.address.Address;
 import com.nirmalks.bookstore.user.entity.User;
 import jakarta.persistence.*;
@@ -7,6 +9,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Entity(name = "purchase_order")
 public class Order {
@@ -15,6 +18,7 @@ public class Order {
     private Long id;
 
     @ManyToOne
+    @JsonBackReference
     private User user;
 
     private Double totalCost;
@@ -27,6 +31,7 @@ public class Order {
     private LocalDateTime placedDate;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<OrderItem> items = new ArrayList<>();
 
     @OneToOne
@@ -97,5 +102,31 @@ public class Order {
 
     public Double calculateTotalCost() {
         return this.items.stream().mapToDouble(item -> item.getPrice() * item.getQuantity()).sum();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Order order = (Order) o;
+        return Objects.equals(id, order.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", user=" + user +
+                ", totalCost=" + totalCost +
+                ", orderStatus=" + orderStatus +
+                ", placedDate=" + placedDate +
+                ", items=" + items +
+                ", address=" + address +
+                '}';
     }
 }

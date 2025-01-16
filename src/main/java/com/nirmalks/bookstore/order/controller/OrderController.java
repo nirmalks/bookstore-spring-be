@@ -1,16 +1,16 @@
 package com.nirmalks.bookstore.order.controller;
 
+import com.nirmalks.bookstore.common.PageRequestDto;
 import com.nirmalks.bookstore.order.api.DirectOrderRequest;
 import com.nirmalks.bookstore.order.api.OrderFromCartRequest;
 import com.nirmalks.bookstore.order.api.OrderResponse;
-import com.nirmalks.bookstore.order.entity.Order;
+import com.nirmalks.bookstore.order.dto.OrderSummaryDto;
 import com.nirmalks.bookstore.order.entity.OrderStatus;
 import com.nirmalks.bookstore.order.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -31,8 +31,8 @@ public class OrderController {
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<Order>> getOrdersByUser(@PathVariable Long userId) {
-        var orders = orderService.getOrdersByUser(userId);
+    public ResponseEntity<Page<OrderSummaryDto>> getOrdersByUser(@PathVariable Long userId, PageRequestDto pageRequestDto) {
+        var orders = orderService.getOrdersByUser(userId, pageRequestDto);
         return ResponseEntity.ok(orders);
     }
 
