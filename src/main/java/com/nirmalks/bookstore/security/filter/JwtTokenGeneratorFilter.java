@@ -16,9 +16,7 @@ import java.io.IOException;
 public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        System.out.println("inside token gen filter");
         var authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println("auth" + authentication);
         if(authentication != null) {
             var env = getEnvironment();
             if(env != null) {

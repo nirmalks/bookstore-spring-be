@@ -53,16 +53,18 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request)  {
-        List<String> excludedPaths = List.of(
+        String requestPath = request.getServletPath();
+        return List.of(
                 "/api/admin/register",
                 "/api/users/register",
+                "/api/register",
                 "/api/login",
-                "/swagger-ui/",
                 "/v3/api-docs",
                 "/api/books",
-                "/api/books/**"
-        );
-        String requestPath = request.getServletPath();
-        return excludedPaths.stream().anyMatch(requestPath::startsWith);
+                "/api/genres"
+        ).contains(requestPath) ||
+                requestPath.startsWith("/swagger-ui/") ||
+                requestPath.startsWith("/api/books/") ||
+                requestPath.startsWith("/api/genres/");
     }
 }

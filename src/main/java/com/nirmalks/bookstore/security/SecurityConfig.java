@@ -31,9 +31,9 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/api/admin/register", "/api/users/register", "/api/login", "/swagger-ui/**", "/v3/api-docs/**"
+                        .requestMatchers("/api/admin/register", "/api/users/register", "/api/login", "/swagger-ui/**", "/v3/api-docs/**", "/error"
                               ).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/books/**" ,"/api/books").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/books/**" ,"/api/books", "/api/genres").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(customAuthenticationEntryPoint))
