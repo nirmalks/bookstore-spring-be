@@ -1,14 +1,13 @@
 package com.nirmalks.bookstore.security.filter;
 
 import com.nirmalks.bookstore.common.AppConstants;
-import com.nirmalks.bookstore.security.CustomUserDetailsService;
 import com.nirmalks.bookstore.common.JwtUtils;
+import com.nirmalks.bookstore.security.CustomUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -33,7 +32,6 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
         var token = request.getHeader(AppConstants.JWT_HEADER);
         logger.debug("JWT token " + token);
         if(token != null) {
-            logger.debug("No JWT token found in request headers.");
             if(JwtUtils.validateToken(token)) {
                 var username = JwtUtils.extractUsername(token);
                 var authorities = JwtUtils.extractAuthorities(token);
@@ -43,10 +41,12 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
                         AuthorityUtils.commaSeparatedStringToAuthorityList(authorities));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
-                throw new BadCredentialsException("User not found");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token invalid");
+                return;
             }
         } else {
-            throw new BadCredentialsException("Token not found");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token not found");
+            return;
         }
         filterChain.doFilter(request, response);
     }
