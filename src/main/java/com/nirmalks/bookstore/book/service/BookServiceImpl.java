@@ -104,11 +104,13 @@ public class BookServiceImpl implements BookService {
                                                     LocalDate endDate,
                                                     Double minPrice,
                                                     Double maxPrice,
+                                                    String sortBy,
+                                                    String sortOrder,
                                                     int page,
                                                     int size) {
         Pageable pageable = PageRequest.of(page, size);
         Specification<Book> specification = BookSpecification.filterBy(search, genre,
-                startDate, endDate, minPrice, maxPrice);
+                startDate, endDate, minPrice, maxPrice, sortBy, sortOrder);
         return bookRepository.findAll(specification, pageable).map(BookMapper::toDTO);
 
     }

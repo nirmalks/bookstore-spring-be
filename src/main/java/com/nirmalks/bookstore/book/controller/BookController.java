@@ -83,11 +83,10 @@ public class BookController {
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam(required = false) Double minPrice,
             @RequestParam(required = false) Double maxPrice,
+            @RequestParam(defaultValue = "title") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortOrder,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
-        if(search.isBlank()) {
-            return bookService.getAllBooks(new PageRequestDto());
-        }
-        return bookService.getFilteredBooks(search, genre, startDate, endDate, minPrice, maxPrice, page, size);
+        return bookService.getFilteredBooks(search, genre, startDate, endDate, minPrice, maxPrice, sortBy, sortOrder, page, size);
     }
 }
