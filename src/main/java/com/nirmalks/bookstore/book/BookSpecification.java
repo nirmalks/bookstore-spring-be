@@ -17,14 +17,16 @@ public class BookSpecification {
 
     public static Specification<Book> filterBy(String searchParam, String genre,
                                                LocalDate startDate, LocalDate endDate,
-                                               Double minPrice, Double maxPrice) {
+                                               Double minPrice, Double maxPrice,
+                                               String sortBy, String sortOrder) {
         return Specification
                 .where(hasSearchParam(searchParam))
                 .and(hasGenre(genre))
                 .and(hasPublishedDateAfter(startDate))
                 .and(hasPublishedDateBefore(endDate))
                 .and(hasPriceGreaterThan(minPrice))
-                .and(hasPriceLessThan(maxPrice));
+                .and(hasPriceLessThan(maxPrice))
+                .and(sortBy(sortBy, sortOrder));
     }
     private static Specification<Book> hasSearchParam(String searchParam) {
         return (root, query, cb) -> {
@@ -86,5 +88,23 @@ public class BookSpecification {
         return (root, query, cb) -> priceTo == null
                 ? cb.conjunction()
                 : cb.lessThanOrEqualTo(root.get(PRICE), priceTo);
+    }
+
+    private static Specification<Book> sortBy(String sortBy, String sortOrder) {
+        return (root, query, cb) -> {
+            if (sortBy == null || sortBy.isEmpty()) {
+                return cb.conjunction();
+            }
+
+            boolean isAscending = sortOrder == null || sortOrder.equals("asc");
+            if (isAscending) {
+                query.orderBy(cb.asc(root.get(sortBy)));
+            } else {
+                query.orderBy(cb.desc(root.get(sortBy)));
+            }
+
+
+            return cb.conjunction();
+        };
     }
 }
