@@ -1,34 +1,33 @@
 package com.nirmalks.bookstore.user.service.impl;
 
 import com.nirmalks.bookstore.auth.api.LoginResponse;
+import com.nirmalks.bookstore.common.JwtUtils;
 import com.nirmalks.bookstore.common.PageRequestDto;
+import com.nirmalks.bookstore.exception.ResourceNotFoundException;
+import com.nirmalks.bookstore.security.SecurityUtils;
 import com.nirmalks.bookstore.user.api.CreateUserRequest;
 import com.nirmalks.bookstore.user.api.UpdateUserRequest;
 import com.nirmalks.bookstore.user.api.UserResponse;
+import com.nirmalks.bookstore.user.dto.UserMapper;
 import com.nirmalks.bookstore.user.entity.User;
 import com.nirmalks.bookstore.user.entity.UserRole;
-import com.nirmalks.bookstore.exception.ResourceNotFoundException;
-import com.nirmalks.bookstore.user.dto.UserMapper;
 import com.nirmalks.bookstore.user.repository.UserRepository;
-import com.nirmalks.bookstore.common.JwtUtils;
 import com.nirmalks.bookstore.user.service.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 import static com.nirmalks.bookstore.common.RequestUtils.getPageable;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
-    
+    private SecurityUtils securityUtils;
     @Override
     public Page<UserResponse> getUsers(PageRequestDto pageRequestDto) {
         return userRepository.findAll(getPageable(pageRequestDto)).map(UserMapper::toResponse);
@@ -36,7 +35,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse createUser(CreateUserRequest userRequest, UserRole role) {
-        String encryptedPassword = passwordEncoder.encode(userRequest.getPassword());
+        if (userRepository.findByUsername(userRequest.getUsername()).isPresent()) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+        String encryptedPassword = securityUtils.encode(userRequest.getPassword());
         userRequest.setPassword(encryptedPassword);
         User user = UserMapper.toEntity(userRequest, role);
         userRepository.save(user);
@@ -45,29 +47,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse getUserById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isEmpty()) {
-            throw new ResourceNotFoundException("User not found");
-        }
-        return UserMapper.toResponse(user.get());
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return UserMapper.toResponse(user);
     }
 
     @Override
     public UserResponse updateUser(Long id, UpdateUserRequest userRequest) {
-        Optional<User> user = userRepository.findById(id);
-        if (user.isEmpty()) {
-            throw new ResourceNotFoundException("User not found");
-        }
-        User updatedUser = userRepository.save(UserMapper.toEntity(user.get(), userRequest));
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User updatedUser = userRepository.save(UserMapper.toEntity(user, userRequest));
         return UserMapper.toResponse(updatedUser);
     }
 
     @Override
     public void deleteUser(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()) {
-            throw new ResourceNotFoundException("User not found");
-        }
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         userRepository.deleteById(userId);
     }
 
@@ -82,7 +75,6 @@ public class UserServiceImpl implements UserService {
         loginResponse.setUserId(user.getId());
         loginResponse.setRole(user.getRole().name());
         return loginResponse;
-
     }
 }
 

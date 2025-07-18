@@ -72,5 +72,4 @@ public class UserController {
                 .buildAndExpand(userResponse.getId()).toUri();
         return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.LOCATION, String.valueOf(location)).body(userResponse);
     }
-
 }

@@ -7,7 +7,6 @@ import com.nirmalks.bookstore.user.entity.User;
 import com.nirmalks.bookstore.user.entity.UserRole;
 
 public class UserMapper {
-
     public static UserDto toDto(User user) {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
@@ -25,14 +24,14 @@ public class UserMapper {
         return user;
     }
 
-        public static User toEntity(CreateUserRequest request, UserRole userRole) {
-            User user = new User();
-            user.setPassword(request.getPassword());
-            user.setUsername(request.getUsername());
-            user.setEmail(request.getEmail());
-            user.setRole(userRole);
-            return user;
-        }
+    public static User toEntity(CreateUserRequest request, UserRole userRole) {
+        User user = new User();
+        user.setPassword(request.getPassword());
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setRole(userRole);
+        return user;
+    }
 
     public static User toEntity(User existingUser, UpdateUserRequest request) {
         existingUser.setPassword(request.getPassword());
@@ -49,5 +48,4 @@ public class UserMapper {
         response.setUserRole(user.getRole());
         return response;
     }
-
 }

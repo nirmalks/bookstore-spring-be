@@ -70,6 +70,7 @@ public class Book {
 
     @Temporal(TemporalType.DATE)
     private LocalDate publishedDate;
+
     public Long getId() {
         return id;
     }
