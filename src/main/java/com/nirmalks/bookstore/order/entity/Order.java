@@ -11,7 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Entity(name = "purchase_order")
+@Entity
+@Table(name = "purchase_order")
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

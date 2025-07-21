@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
-    @Query("SELECT o FROM purchase_order o WHERE o.user.id = :userId")
+    @Query("SELECT o FROM Order o WHERE o.user.id = :userId")
     Page<Order> findAllByUserId(@Param("userId") Long userId, Pageable pageable);
 }
