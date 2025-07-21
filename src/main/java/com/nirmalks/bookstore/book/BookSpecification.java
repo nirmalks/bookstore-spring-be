@@ -33,7 +33,7 @@ public class BookSpecification {
             if (searchParam == null || searchParam.isEmpty()) {
                 return cb.conjunction(); // No filtering if the search param is empty or null
             }
-            // Here we check if the searchParam matches title, isbn, or author
+            // check if the searchParam matches title, isbn, or author
             Predicate titlePredicate = cb.like(cb.lower(root.get(TITLE)), "%" + searchParam.toLowerCase() + "%");
             Predicate isbnPredicate = cb.like(cb.lower(root.get(ISBN)), "%" + searchParam.toLowerCase() + "%");
             Predicate authorPredicate = cb.like(cb.lower(root.join(AUTHOR).get("name")), "%" + searchParam.toLowerCase() + "%");
