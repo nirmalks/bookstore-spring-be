@@ -1,4 +1,4 @@
-package com.nirmalks.bookstore.common;
+package com.nirmalks.bookstore.author.api;
 
 import jakarta.validation.constraints.NotNull;
 

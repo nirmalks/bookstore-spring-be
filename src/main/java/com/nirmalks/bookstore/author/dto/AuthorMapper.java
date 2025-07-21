@@ -1,6 +1,6 @@
 package com.nirmalks.bookstore.author.dto;
 
-import com.nirmalks.bookstore.common.AuthorRequest;
+import com.nirmalks.bookstore.author.api.AuthorRequest;
 import com.nirmalks.bookstore.author.entity.Author;
 
 public class AuthorMapper {
