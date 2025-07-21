@@ -1,10 +1,10 @@
 package com.nirmalks.bookstore.common;
 
 public class PageRequestDto {
-    private int page = 0; // Default to page 0
-    private int size = 10; // Default to size 10
-    private String sortKey = "id"; // Default sort by "id"
-    private String sortOrder = "asc"; // Default ascending order
+    private int page = 0;
+    private int size = 10;
+    private String sortKey = "id";
+    private String sortOrder = "asc";
 
     public PageRequestDto() {}
 
