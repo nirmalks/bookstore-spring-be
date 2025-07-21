@@ -1,9 +1,14 @@
 package com.nirmalks.bookstore.author.controller;
 
+import com.nirmalks.bookstore.author.api.AuthorRequest;
 import com.nirmalks.bookstore.author.dto.AuthorDto;
 import com.nirmalks.bookstore.author.service.AuthorService;
-import com.nirmalks.bookstore.author.api.AuthorRequest;
 import com.nirmalks.bookstore.common.PageRequestDto;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
@@ -17,22 +22,38 @@ import java.net.URI;
 
 @RestController
 @RequestMapping("/api/authors")
+@SecurityRequirement(name = "bearerAuth")
+@Tag(name = "Author Management", description = "Operations related to authors in the Bookstore API") // Add this annotation
 public class AuthorController {
     @Autowired
     private AuthorService authorService;
 
     @GetMapping
+    @Operation(summary = "Get paginated list of authors", description = "Returns a list of authors based on pagination and sorting parameters")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "List of authors returned successfully")
+    })
     public Page<AuthorDto> getAllAuthors(PageRequestDto pageRequestDto) {
         return authorService.getAllAuthors(pageRequestDto);
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get author by ID", description = "Returns author details for a given author ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Author found"),
+            @ApiResponse(responseCode = "404", description = "Author not found")
+    })
     public AuthorDto getAuthorById(@PathVariable Long id) {
         return authorService.getAuthorById(id);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
+    @Operation(summary = "Create a new author", description = "Accessible by ADMIN role only")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Author created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input")
+    })
     public ResponseEntity<AuthorDto> createAuthor(@RequestBody AuthorRequest authorRequest) {
         var author = authorService.createAuthor(authorRequest);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -40,12 +61,22 @@ public class AuthorController {
         return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.LOCATION, String.valueOf(location)).body(author);
     }
 
+    @Operation(summary = "Update author", description = "Accessible by ADMIN role only")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Author updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input")
+    })
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public AuthorDto updateAuthor(@PathVariable Long id, @RequestBody AuthorRequest authorRequest) {
         return authorService.updateAuthor(id, authorRequest);
     }
 
+    @Operation(summary = "Delete author", description = "Accessible by ADMIN role only")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Author deleted successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input")
+    })
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {

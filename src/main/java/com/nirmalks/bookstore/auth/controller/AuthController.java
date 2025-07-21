@@ -3,6 +3,10 @@ package com.nirmalks.bookstore.auth.controller;
 import com.nirmalks.bookstore.auth.api.LoginRequest;
 import com.nirmalks.bookstore.auth.api.LoginResponse;
 import com.nirmalks.bookstore.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
+@Tag(name = "Authentication", description = "User login and authentication operations") // Added Tag
 public class AuthController {
     @Autowired
     private UserService userService;
@@ -24,6 +29,11 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
+    @Operation(summary = "User login", description = "Authenticates a user and returns a JWT token upon successful login.") // Added Operation
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Login successful, returns JWT token"),
+            @ApiResponse(responseCode = "401", description = "Invalid credentials")
+    })
     public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
