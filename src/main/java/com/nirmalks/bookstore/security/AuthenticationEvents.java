@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthenticationEvents {
     @EventListener
-    public  void onSuccess(AuthenticationSuccessEvent successEvent) {
+    public void onSuccess(AuthenticationSuccessEvent successEvent) {
         System.out.println("login successful for the user" + successEvent.getAuthentication().getName());
     }
 }

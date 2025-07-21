@@ -42,23 +42,6 @@ public class BookSpecification {
             return cb.or(titlePredicate, isbnPredicate, authorPredicate);
         };
     }
-    private static Specification<Book> hasTitle(String title) {
-        return (root, query, cb) -> title == null || title.isEmpty()
-                ? cb.conjunction()
-                : cb.like(cb.lower(root.get(TITLE)), "%" + title.toLowerCase() + "%");
-    }
-
-    private static Specification<Book> hasIsbn(String isbn) {
-        return (root, query, cb) -> isbn == null || isbn.isEmpty()
-                ? cb.conjunction()
-                : cb.like(cb.lower(root.get(ISBN)), "%" + isbn.toLowerCase() + "%");
-    }
-
-    private static Specification<Book> hasAuthor(String author) {
-        return (root, query, cb) -> author == null || author.isEmpty()
-                ? cb.conjunction()
-                : cb.like(cb.lower(root.join(AUTHOR).get("name")), "%" + author.toLowerCase() + "%");
-    }
 
     private static Specification<Book> hasGenre(String genre) {
         return (root, query, cb) -> genre == null || genre.isEmpty()
@@ -102,8 +85,6 @@ public class BookSpecification {
             } else {
                 query.orderBy(cb.desc(root.get(sortBy)));
             }
-
-
             return cb.conjunction();
         };
     }
