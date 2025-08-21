@@ -68,7 +68,9 @@ public class UserServiceImpl implements UserService {
     public LoginResponse authenticate(String username, String password) {
         var user = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("user not found"));
         String token =  JwtUtils.generateToken(user.getUsername(), user.getAuthorities());
-
+        if (!securityUtils.matches(password, user.getPassword())) {
+            throw new IllegalArgumentException("Invalid username or password");
+        }
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(token);
         loginResponse.setUsername(user.getUsername());
