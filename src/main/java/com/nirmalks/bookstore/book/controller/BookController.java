@@ -58,10 +58,10 @@ public class BookController {
             @ApiResponse(responseCode = "400", description = "Invalid input")
     })
     public ResponseEntity<BookDto> createBook(@RequestBody BookRequest BookRequest) {
-        var Book = bookService.createBook(BookRequest);
+        var book = bookService.createBook(BookRequest);
         var location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(Book.getId()).toUri();
-        return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.LOCATION, String.valueOf(location)).body(Book);
+                .buildAndExpand(book.getId()).toUri();
+        return ResponseEntity.status(HttpStatus.CREATED).header(HttpHeaders.LOCATION, String.valueOf(location)).body(book);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
