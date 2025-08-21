@@ -5,6 +5,7 @@ import com.nirmalks.bookstore.genre.entity.Genre;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,7 +23,7 @@ public class Book {
             name = "book_author",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private List<Author> authors;
+    private List<Author> authors = new ArrayList<>();
 
     @Column(nullable = false)
     private Double price;
@@ -58,7 +59,7 @@ public class Book {
             name = "book_genre",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
-    private List<Genre> genres;
+    private List<Genre> genres = new ArrayList<>();
 
     public List<Genre> getGenres() {
         return genres;
