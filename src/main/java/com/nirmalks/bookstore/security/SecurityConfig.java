@@ -30,10 +30,16 @@ public class SecurityConfig {
     @Autowired
     CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
+    @Autowired
+    private JwtTokenGeneratorFilter jwtTokenGeneratorFilter;
+
+    @Autowired
+    private JwtTokenValidatorFilter jwtTokenValidatorFilter;
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/api/admin/register", "/api/users/register", "/api/login", "/swagger-ui/**", "/v3/api-docs/**", "/error"
+                        .requestMatchers("/api/admin/register", "/api/users/register", "/api/login", "/swagger-ui/**", "/v3/api-docs/**", "/error",
+                                "/actuator/**"
                               ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/books/**" ,"/api/books", "/api/genres").permitAll()
                         .anyRequest().authenticated()
@@ -50,8 +56,10 @@ public class SecurityConfig {
                             configuration.setMaxAge(3600L);
                             return configuration;
                         }))
-                .addFilterAfter(new JwtTokenGeneratorFilter(), BasicAuthenticationFilter.class)
-                .addFilterBefore(new JwtTokenValidatorFilter(customUserDetailsService), BasicAuthenticationFilter.class)
+                .addFilterAfter(jwtTokenGeneratorFilter, BasicAuthenticationFilter.class)
+                .addFilterBefore(jwtTokenValidatorFilter, BasicAuthenticationFilter.class)
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable);

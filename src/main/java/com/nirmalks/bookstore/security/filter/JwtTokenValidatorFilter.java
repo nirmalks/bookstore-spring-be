@@ -68,6 +68,7 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
                 requestPath.startsWith("/v3/api-docs") ||
                 requestPath.startsWith("/swagger-ui/") ||
                 requestPath.startsWith("/api/books/") ||
-                requestPath.startsWith("/api/genres/");
+                requestPath.startsWith("/api/genres/") ||
+                requestPath.startsWith("/actuator/");
     }
 }
