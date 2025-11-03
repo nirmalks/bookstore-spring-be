@@ -1,6 +1,7 @@
 ## Bookstore BE service using Spring Boot
 
 - Backend Stack: Spring Boot, Spring Security (JWT), Spring Data JPA, PostgreSQL, Flyway, Redis, Elasticsearch
+- Companion FE project - https://github.com/nirmalks/bookstore-react
 - Tools & Libraries: Swagger, Jakarta Validation, AOP Logging
 
 ### Key Features
